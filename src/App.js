@@ -1,25 +1,45 @@
-import logo from './logo.svg';
 import './App.css';
+import Login from './modules/account/Login';
+import Grid2 from '@mui/material/Unstable_Grid2';
+import Header from './modules/core/Header.jsx';
+import PilotList from './modules/productDesign/PilotList';
+import { useState, useEffect } from 'react';
+import {getAllProductPilots} from './modules/core/data/ProductPilots';
+import { useCallback } from 'react';
 
-function App() {
+export default function App() {
+
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [pilots, setPilots] = useState([]);
+
+  const fetchData = useCallback(async () => {
+    if (loggedIn) {
+      const tempArray = await getAllProductPilots();
+      setPilots(tempArray);
+      console.log(tempArray);
+    } else {
+      setPilots([]);
+    }
+  }, [loggedIn]);
+
+  useEffect(() => {
+    fetchData();
+  }, [loggedIn, fetchData]);
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <Grid2 container spacing={1}>
+      <Grid2 xs={12}>
+        <Header/>
+      </Grid2>
+      {loggedIn ? 
+        (<Grid2 xs={12}>
+        <PilotList pilots={pilots}/>
+      </Grid2>) : (
+      <Grid2  xs={12} sx={{display: 'flex', justifyContent: "center", alignItems: 'center', marginTop: 10}}>
+        <Login setLoggedIn={setLoggedIn}/>
+      </Grid2>
+      )}
+      
+    </Grid2>
+  )
 }
-
-export default App;
