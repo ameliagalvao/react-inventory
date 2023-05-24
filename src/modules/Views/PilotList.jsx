@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import Card from '@mui/material/Card';
-import AddProductPilot from './AddProductPilot'
+import AddProductPilot from '../productDesign/AddProductPilot'
 
 const PilotList = ({pilots = []}) => {
 

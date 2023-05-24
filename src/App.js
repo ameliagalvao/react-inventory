@@ -1,8 +1,8 @@
 import './App.css';
-import Login from './modules/account/Login';
+import Login from './modules/Views/Login';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import Header from './modules/core/Header.jsx';
-import PilotList from './modules/productDesign/PilotList';
+import PilotList from './modules/Views/PilotList';
 import { useState, useEffect } from 'react';
 import {getAllProductPilots} from './modules/core/data/ProductPilots';
 import { useCallback } from 'react';
