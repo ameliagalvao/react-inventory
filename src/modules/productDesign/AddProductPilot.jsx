@@ -6,10 +6,9 @@ const AddProductPilot = ({databaseadd}) => {
   const [pilot, setPilot] = useState({
     name: "",
     craft: "",
-    designer: "",
-    supplies: [""],
     productionTime: 0,
-    cost: 0,
+    supplies: [""],
+    userUID: '',
   })
   const [error, setError] = useState('')
 
@@ -20,7 +19,7 @@ const AddProductPilot = ({databaseadd}) => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    if (!pilot.name || !pilot.designer || !pilot.craft || !pilot.cost || !pilot.productionTime || !pilot.supplies ) {
+    if (!pilot.name || !pilot.craft || !pilot.productionTime || !pilot.supplies ) {
       setError('Por favor, preencha todos os campos.');
       return;
     } else {
@@ -35,10 +34,6 @@ const AddProductPilot = ({databaseadd}) => {
         <label htmlFor='name'>Nome do piloto:</label><br></br>
         <input type='text' name='name' value={pilot.name} onChange={inputChangeHandler}/>
         <br></br>
-        <label htmlFor='designer'>Designer:</label>
-        <br></br>
-        <input type='text' name='designer' value={pilot.designer} onChange={inputChangeHandler}/>
-        <br></br>
         <label htmlFor='craft'>Técnica:</label>
         <br></br>
         <input type='text' name='craft' value={pilot.craft} onChange={inputChangeHandler}/>
@@ -50,10 +45,6 @@ const AddProductPilot = ({databaseadd}) => {
         <label htmlFor='supplies'>Matéria prima:</label>
         <br></br>
         <input type='text' name='supplies' value={pilot.supplies} onChange={inputChangeHandler}/>
-        <br></br>
-        <label htmlFor='cost'>Custo:</label>
-        <br></br>
-        <input type='text' name='cost' value={pilot.cost} onChange={inputChangeHandler}/>
         <br></br>
         <input type='submit' value="Salvar"/>
       </form>
