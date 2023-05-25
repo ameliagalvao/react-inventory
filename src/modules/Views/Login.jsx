@@ -4,7 +4,7 @@ import Card from '@mui/material/Card';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../core/data/FireBase';
 
-const Login = ({setLoggedIn}) => {
+const Login = () => {
 
   const [user, setUser] = useState({
     email: "",
@@ -29,7 +29,6 @@ const Login = ({setLoggedIn}) => {
         const user = userCredential.user;
         console.log(user);
       })
-      .then(() => setLoggedIn(true))
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;

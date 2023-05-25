@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import DOMPurify from 'dompurify';
+import { Card } from '@mui/material';
 
 const AddProductPilot = ({databaseadd}) => {
 
@@ -28,7 +29,7 @@ const AddProductPilot = ({databaseadd}) => {
   }
   
   return (
-   <div>
+   <Card sx={{ m: 2, p:2, width:300, textAlign: 'center'}}>
       <h3>Adicionar novo Piloto</h3>      
       <form onSubmit={submitHandler}>
         <label htmlFor='name'>Nome do piloto:</label><br></br>
@@ -49,7 +50,7 @@ const AddProductPilot = ({databaseadd}) => {
         <input type='submit' value="Salvar"/>
       </form>
       {error && <p>{error}</p>}
-    </div>
+    </Card>
   )
 }
 
