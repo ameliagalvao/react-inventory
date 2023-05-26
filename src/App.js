@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react';
 import {getAllProductPilots} from './modules/core/data/ProductPilots';
 import { useCallback } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import AddProductPilot from './modules/productDesign/AddProductPilot';
+import AddProductPilot from './modules/Views/AddProductPilot';
 
 export default function App() {
 
@@ -26,6 +26,10 @@ export default function App() {
   // Professor como faz pra usar o react-router aqui?
   const navigateToAddNewPilot = () => {
     window.location.href = '/add-new-pilot';
+  };
+
+  const navigateToPilotList = () => {
+    window.location.href = '/';
   };
   
   return (
@@ -52,7 +56,7 @@ export default function App() {
 
           <Route path='/add-new-pilot'>
             <Grid2  xs={12} sx={{display: 'flex', justifyContent: "center", alignItems: 'center'}}>
-              <AddProductPilot/>
+              <AddProductPilot navigateToPilotList={navigateToPilotList}/>
             </Grid2>
           </Route>
         </Switch>

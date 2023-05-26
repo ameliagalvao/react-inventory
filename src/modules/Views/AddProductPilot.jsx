@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import DOMPurify from 'dompurify';
 import { Card } from '@mui/material';
 
-const AddProductPilot = ({databaseadd}) => {
+const AddProductPilot = ({databaseadd, navigateToPilotList}) => {
 
   const [pilot, setPilot] = useState({
     name: "",
@@ -27,6 +27,11 @@ const AddProductPilot = ({databaseadd}) => {
       databaseadd()
     }
   }
+
+  const handleClickCancel = (e) => {
+    e.preventDefault();
+    navigateToPilotList();
+  };
   
   return (
    <Card sx={{ m: 2, p:2, width:300, textAlign: 'center'}}>
@@ -48,6 +53,7 @@ const AddProductPilot = ({databaseadd}) => {
         <input type='text' name='supplies' value={pilot.supplies} onChange={inputChangeHandler}/>
         <br></br>
         <input type='submit' value="Salvar"/>
+        <button onClick={handleClickCancel}>Cancelar</button>
       </form>
       {error && <p>{error}</p>}
     </Card>
