@@ -29,10 +29,10 @@ export default function App() {
   
   return (
     <Grid2 container spacing={1}>
-      <Grid2 xs={12}>
+      <Grid2 xs={12} sx={{padding:2}}>
         <Header/>
       </Grid2>
-    <Grid2  xs={12} sx={{justifyContent: "center", alignItems: 'center'}}></Grid2>
+    <Grid2  xs={12} sx={{padding:3}}>
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<PilotList pilots={pilots}/>}/>
@@ -40,6 +40,7 @@ export default function App() {
         <Route path='/add-new-pilot' element={<AddProductPilot refreshPilotList={refreshPilotList}/>}/>
         </Routes>
       </BrowserRouter>
+    </Grid2>
     </Grid2>
   )
 }

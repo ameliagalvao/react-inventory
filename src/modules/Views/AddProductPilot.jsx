@@ -15,6 +15,7 @@ const AddProductPilot = ({refreshPilotList}) => {
   })
   const [error, setError] = useState('')
 
+  // ToDo: Mudar p/ input não controlado useRef
   const inputChangeHandler = (e) => {
     const {name, value} = e.target;
     setPilot((prev) => ({...prev, [name]: DOMPurify.sanitize(value)}));
