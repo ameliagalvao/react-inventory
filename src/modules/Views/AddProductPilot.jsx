@@ -2,15 +2,16 @@ import React, {useState} from 'react';
 import DOMPurify from 'dompurify';
 import { Card } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { addNewPilot } from '../core/data/ProductPilots';
 
-const AddProductPilot = ({databaseadd}) => {
+const AddProductPilot = ({refreshPilotList}) => {
 
   const [pilot, setPilot] = useState({
     name: "",
     craft: "",
     productionTime: 0,
-    supplies: [""],
     userUID: '',
+    cost: 0,
   })
   const [error, setError] = useState('')
 
@@ -21,11 +22,13 @@ const AddProductPilot = ({databaseadd}) => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    if (!pilot.name || !pilot.craft || !pilot.productionTime || !pilot.supplies ) {
+    if (!pilot.name || !pilot.craft || !pilot.productionTime || !pilot.cost ) {
       setError('Por favor, preencha todos os campos.');
       return;
     } else {
-      databaseadd()
+      const newPilot = {cost:`${pilot.cost}`, name:`${pilot.name}`, craft:`${pilot.craft}`, productionTime:`${pilot.productionTime}`, userUID: 'chLXXnwefYbnZQ4pRuafV4o85vi2'}
+      addNewPilot(newPilot)
+      refreshPilotList()
     }
   }
   
@@ -44,9 +47,9 @@ const AddProductPilot = ({databaseadd}) => {
         <br></br>
         <input type='number' name='productionTime' value={pilot.productionTime} onChange={inputChangeHandler}/>
         <br></br>
-        <label htmlFor='supplies'>Matéria prima:</label>
+        <label htmlFor='cost'>Custo:</label>
         <br></br>
-        <input type='text' name='supplies' value={pilot.supplies} onChange={inputChangeHandler}/>
+        <input type='number' name='cost' value={pilot.cost} onChange={inputChangeHandler}/>
         <br></br>
         <input type='submit' value="Salvar"/>
         <Link to={'/'}><button>Cancelar</button></Link>

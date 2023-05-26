@@ -22,6 +22,10 @@ export default function App() {
   useEffect(() => {
     fetchData();
   }, [fetchData]);
+
+  const refreshPilotList = () => {
+    fetchData()
+  }
   
   return (
     <Grid2 container spacing={1}>
@@ -33,7 +37,7 @@ export default function App() {
       <Routes>
         <Route path='/' element={<PilotList pilots={pilots}/>}/>
         <Route path='/login' element={<Login/>} />
-        <Route path='/add-new-pilot' element={<AddProductPilot/>}/>
+        <Route path='/add-new-pilot' element={<AddProductPilot refreshPilotList={refreshPilotList}/>}/>
         </Routes>
       </BrowserRouter>
     </Grid2>
