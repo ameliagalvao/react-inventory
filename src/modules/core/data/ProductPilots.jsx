@@ -1,24 +1,45 @@
-import { addDoc, collection, getDocs } from 'firebase/firestore';
+import { addDoc, collection, getDocs, doc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { db } from './FireBase';
 
 export const getAllProductPilots = async () => {
-  const doc_pilots = await getDocs(collection(db, "product-pilots"));
-  const response = [];
-  doc_pilots.forEach(pilot => {
-    response.push({id: pilot.id, ...pilot.data()});
-  });
-  return response;
+  try {
+    const pilotRef = await getDocs(collection(db, "product-pilots"));
+    const response = [];
+    pilotRef.forEach(pilot => {
+      response.push({id: pilot.id, ...pilot.data()});
+    });
+    return response;
+  } catch (error) {
+    console.error("Erro", error);
+    return [];
+  }
 };
 
 export const addNewPilot = async (pilot) => {
 try{
-  const doc_pilots = await addDoc(collection(db, "product-pilots"), pilot);
-  console.log(doc_pilots.id);
+  const pilotRef = await addDoc(collection(db, "product-pilots"), pilot);
+  console.log(pilotRef.id);
 } catch(e){
   console.error('Erro:', e);
 }
-}
+};
 
-export const EditPilot = async() => {
-  
-}
+export const editPilot = async(pilotID, newData) => {
+  try {
+    const pilotRef = doc(collection(db, "product-pilots"), pilotID);
+    await updateDoc(pilotRef, newData);
+    console.log("Piloto atualizado com sucesso");
+  } catch (error) {
+    console.error("Erro:", error);
+  }
+};
+
+export const deletePilot = async (pilotID) => {
+  try {
+    const pilotRef = doc(collection(db, "product-pilots"), pilotID);
+    await deleteDoc(pilotRef);
+    console.log("Deletado com sucesso");
+  } catch (error) {
+    console.error("Erro:", error);
+  }
+};

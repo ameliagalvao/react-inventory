@@ -8,15 +8,13 @@ import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import CardMedia from '@mui/material/CardMedia';
+import {deletePilot} from '../core/data/ProductPilots'
 
-const PilotList = ({pilots = [], deleteSinglePost , editPost}) => {
+const PilotList = ({pilots = [], refreshList}) => {
 
-  const handleDelete = () => {
-    deleteSinglePost()
-  }
-
-  const handleEdit = () => {
-    editPost()
+  const handleDelete = (itemID) => {
+    deletePilot(itemID)
+    refreshList()
   }
 
   return (
@@ -35,10 +33,10 @@ const PilotList = ({pilots = [], deleteSinglePost , editPost}) => {
             {item.name}
             </CardContent>
             <CardActions disableSpacing>
-              <IconButton onClick={handleDelete} aria-label="delete">
+              <IconButton onClick={() => handleDelete(item.id)} aria-label="delete">
                 <DeleteIcon />
               </IconButton>
-              <IconButton onClick={handleEdit} aria-label="edit">
+              <IconButton onClick={() => console.log(item.id)} aria-label="edit">
                 <EditIcon />
               </IconButton>
             </CardActions>

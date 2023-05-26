@@ -35,7 +35,7 @@ export default function App() {
     <Grid2  xs={12} sx={{padding:3}}>
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<PilotList pilots={pilots}/>}/>
+        <Route path='/' element={<PilotList pilots={pilots} refreshList={refreshPilotList}/>}/>
         <Route path='/login' element={<Login/>} />
         <Route path='/add-new-pilot' element={<AddProductPilot refreshPilotList={refreshPilotList}/>}/>
         </Routes>

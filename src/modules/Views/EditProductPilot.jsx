@@ -2,9 +2,8 @@ import React, {useState} from 'react';
 import DOMPurify from 'dompurify';
 import { Card } from '@mui/material';
 import { Link } from 'react-router-dom';
-import { EditPilot } from '../core/data/ProductPilots';
 
-const EditProductPilot = ({refreshPilotList}) => {
+const EditProductPilot = () => {
 
   const [pilot, setPilot] = useState({
     name: "",
@@ -28,8 +27,6 @@ const EditProductPilot = ({refreshPilotList}) => {
       return;
     } else {
       const newPilot = {cost:`${pilot.cost}`, name:`${pilot.name}`, craft:`${pilot.craft}`, productionTime:`${pilot.productionTime}`, userUID: 'chLXXnwefYbnZQ4pRuafV4o85vi2'}
-      EditPilot(newPilot)
-      refreshPilotList()
     }
   }
   
