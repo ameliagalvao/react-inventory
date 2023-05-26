@@ -1,8 +1,9 @@
-import React, {useState} from 'react'
+import React, {useState} from 'react';
 import DOMPurify from 'dompurify';
 import { Card } from '@mui/material';
+import { Link } from 'react-router-dom';
 
-const AddProductPilot = ({databaseadd, navigateToPilotList}) => {
+const AddProductPilot = ({databaseadd}) => {
 
   const [pilot, setPilot] = useState({
     name: "",
@@ -27,11 +28,6 @@ const AddProductPilot = ({databaseadd, navigateToPilotList}) => {
       databaseadd()
     }
   }
-
-  const handleClickCancel = (e) => {
-    e.preventDefault();
-    navigateToPilotList();
-  };
   
   return (
    <Card sx={{ m: 2, p:2, width:300, textAlign: 'center'}}>
@@ -53,7 +49,7 @@ const AddProductPilot = ({databaseadd, navigateToPilotList}) => {
         <input type='text' name='supplies' value={pilot.supplies} onChange={inputChangeHandler}/>
         <br></br>
         <input type='submit' value="Salvar"/>
-        <button onClick={handleClickCancel}>Cancelar</button>
+        <Link to={'/'}><button>Cancelar</button></Link>
       </form>
       {error && <p>{error}</p>}
     </Card>

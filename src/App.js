@@ -6,7 +6,7 @@ import PilotList from './modules/Views/PilotList';
 import { useState, useEffect } from 'react';
 import {getAllProductPilots} from './modules/core/data/ProductPilots';
 import { useCallback } from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import AddProductPilot from './modules/Views/AddProductPilot';
 
 export default function App() {
@@ -22,47 +22,20 @@ export default function App() {
   useEffect(() => {
     fetchData();
   }, [fetchData]);
-
-  // Professor como faz pra usar o react-router aqui?
-  const navigateToAddNewPilot = () => {
-    window.location.href = '/add-new-pilot';
-  };
-
-  const navigateToPilotList = () => {
-    window.location.href = '/';
-  };
   
   return (
     <Grid2 container spacing={1}>
-      
-      <BrowserRouter>
-      
-        <Grid2 xs={12}>
-          <Header/>
-        </Grid2>
-
-        <Switch>
-          <Route exact path='/'>
-            <Grid2 xs={12}>
-              <PilotList pilots={pilots} navigateToAddNewPilot={navigateToAddNewPilot} />
-            </Grid2>
-          </Route>
-
-          <Route path='/login'>
-            <Grid2  xs={12} sx={{display: 'flex', justifyContent: "center", alignItems: 'center', marginTop: 5}}>
-            <Login/>
-            </Grid2>
-          </Route>
-
-          <Route path='/add-new-pilot'>
-            <Grid2  xs={12} sx={{display: 'flex', justifyContent: "center", alignItems: 'center'}}>
-              <AddProductPilot navigateToPilotList={navigateToPilotList}/>
-            </Grid2>
-          </Route>
-        </Switch>
-
+      <Grid2 xs={12}>
+        <Header/>
+      </Grid2>
+    <Grid2  xs={12} sx={{justifyContent: "center", alignItems: 'center'}}></Grid2>
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<PilotList pilots={pilots}/>}/>
+        <Route path='/login' element={<Login/>} />
+        <Route path='/add-new-pilot' element={<AddProductPilot/>}/>
+        </Routes>
       </BrowserRouter>
-    
     </Grid2>
   )
 }
