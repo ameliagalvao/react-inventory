@@ -1,5 +1,5 @@
 import Card from '@mui/material/Card';
-import { Box } from '@mui/material';
+import Grid2 from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 import {Link} from 'react-router-dom';
 import CardContent from '@mui/material/CardContent';
@@ -20,14 +20,14 @@ const PilotList = ({pilots = [], deleteSinglePost , editPost}) => {
   }
 
   return (
-   <Box sx={{ width:'400px' }}>
+   <>
       <Typography gutterBottom variant="h5" component="p" sx={{ fontWeight:'700'}}>Pilotos</Typography>
-        <Box sx={{ display:'inline-flex'}}>
+        <Grid2 container>
           {pilots.map((item, index) => <Card sx={{ margin: 2, p:2, backgroundColor:"#E63A60", 
-          color:"white", fontWeight:"500", fontSize:'18px', textAlign:'center' }} key={`pilot-${index}`}>
+          color:"white", fontWeight:"500", fontSize:'18px', textAlign:'center', width: 150 }} key={`pilot-${index}`}>
             <CardMedia
         component="img"
-        sx={{ width: 151, borderRadius:2 }}
+        sx={{ width: 150, borderRadius:2 }}
         image="https://cdn.folhape.com.br/upload/dn_arquivo/2020/11/whatsapp-image-2020-11-27-at-120817-pm.jpg"
         alt="..."
       />
@@ -43,11 +43,11 @@ const PilotList = ({pilots = [], deleteSinglePost , editPost}) => {
               </IconButton>
             </CardActions>
           </Card>)}
-        </Box>
+        </Grid2>
      <div>
         <Link to={'/add-new-pilot'}><button>Adicionar Novo Piloto</button></Link>
      </div>
-    </Box>
+    </>
   )
 }
 

@@ -18,3 +18,7 @@ try{
   console.error('Erro:', e);
 }
 }
+
+export const EditPilot = async() => {
+  
+}
