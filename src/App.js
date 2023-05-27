@@ -12,6 +12,7 @@ import AddProductPilot from './modules/Views/AddProductPilot';
 
 export default function App() {
 
+  // Controle de estado da lista de pilotos --------------
   const [pilots, setPilots] = useState([]);
 
   const fetchData = useCallback(async () => {
@@ -27,7 +28,8 @@ export default function App() {
   const refreshPilotList = () => {
     fetchData()
   }
-  
+  // -----------------------------------------------------
+
   return (
     <Grid2 container spacing={1}>
       <Grid2 xs={12} sx={{padding:2}}>
