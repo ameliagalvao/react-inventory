@@ -7,7 +7,7 @@ import { Context } from '../core/Context';
 
 const EditProductPilot = ({refreshPilotList}) => {
   const navigate = useNavigate();
-  const { selectedPilotId } = useContext(Context);
+  const { selectedPilot } = useContext(Context);
 
   const pilot = {
     nameRef: useRef(),
@@ -35,7 +35,7 @@ const EditProductPilot = ({refreshPilotList}) => {
         productionTime: `${pilot.productionTime}`,
         userUID: 'chLXXnwefYbnZQ4pRuafV4o85vi2'
       };
-      editPilot(selectedPilotId, newPilot);
+      editPilot(selectedPilot.id, newPilot);
       refreshPilotList();
       navigate('/');
     }
@@ -43,22 +43,22 @@ const EditProductPilot = ({refreshPilotList}) => {
   
   return (
    <Card sx={{ m: 2, p:2, width:300, textAlign: 'center'}}>
-      <h3>Editar</h3>      
+      <h3>Editar {selectedPilot.name}</h3>      
       <form onSubmit={submitHandler}>
         <label htmlFor='name'>Nome do piloto:</label><br></br>
-        <input type='text' name='name' ref={pilot.nameRef} />
+        <input type='text' name='name' ref={pilot.nameRef} placeholder={selectedPilot.name} />
         <br></br>
         <label htmlFor='craft'>Técnica:</label>
         <br></br>
-        <input type='text' name='craft' ref={pilot.craftRef}/>
+        <input type='text' name='craft' ref={pilot.craftRef} placeholder={selectedPilot.craft}/>
         <br></br>
         <label htmlFor='productionTime'>Tempo para produzir:</label>
         <br></br>
-        <input type='number' name='productionTime' ref={pilot.productionTimeRef}/>
+        <input type='number' name='productionTime' ref={pilot.productionTimeRef} placeholder={selectedPilot.productionTime}/>
         <br></br>
         <label htmlFor='cost'>Custo:</label>
         <br></br>
-        <input type='number' name='cost' ref={pilot.costRef}/>
+        <input type='number' name='cost' ref={pilot.costRef} placeholder={selectedPilot.cost}/>
         <br></br>
         <input type='submit' value="Salvar"/>
         <Link to={'/'}><button>Cancelar</button></Link>

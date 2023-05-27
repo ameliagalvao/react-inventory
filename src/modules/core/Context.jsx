@@ -3,15 +3,15 @@ import React, { createContext, useState } from 'react';
 const Context = createContext();
 
 const ContextProvider = ({ children }) => {
-  const [selectedPilotId, setSelectedPilotId] = useState(null);
+  const [selectedPilot, setSelectedPilot] = useState(null);
 
-  const setSelectedPilot = (id) => {
-    setSelectedPilotId(id);
+  const setSelectedPilotData = (data) => {
+    setSelectedPilot(data);
   };
-  
+
   const contextValue = {
-    selectedPilotId,
-    setSelectedPilot
+    selectedPilot,
+    setSelectedPilotData
   };
 
   return (
@@ -20,6 +20,5 @@ const ContextProvider = ({ children }) => {
     </Context.Provider>
   );
 };
-
 
 export { Context, ContextProvider };

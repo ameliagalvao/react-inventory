@@ -14,7 +14,7 @@ import { useContext } from 'react';
 
 const PilotList = ({pilots = [], refreshPilotList}) => {
 
-  const { setSelectedPilot } = useContext(Context);
+  const { setSelectedPilotData } = useContext(Context);
 
   const handleDelete = (itemID) => {
     const confirmDeletion = window.confirm('Tem certeza que deseja deletar?')
@@ -26,8 +26,8 @@ const PilotList = ({pilots = [], refreshPilotList}) => {
     }
   }
 
-  const handleEdit = (itemId) => {
-    setSelectedPilot(itemId);
+  const handleEdit = (item) => {
+    setSelectedPilotData(item);
   };
 
   return (
@@ -49,7 +49,7 @@ const PilotList = ({pilots = [], refreshPilotList}) => {
               <IconButton onClick={() => handleDelete(item.id)} aria-label="delete">
                 <DeleteIcon />
               </IconButton>
-              <Link to={'/edit-pilot'} onClick={() => handleEdit(item.id)}><IconButton aria-label="edit">
+              <Link to={'/edit-pilot'} onClick={() => handleEdit({id: item.id, ...item})}><IconButton aria-label="edit">
                 <EditIcon />
               </IconButton></Link>
             </CardActions>
