@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import DOMPurify from 'dompurify';
 import { Card } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
@@ -13,8 +13,10 @@ const AddProductPilot = ({refreshPilotList}) => {
     craftRef: useRef(),
     productionTimeRef: useRef(),
     costRef: useRef(),
-    errorRef: useRef('')
+    error: ''
   };
+
+  const [error, setError] = useState('');
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -24,7 +26,7 @@ const AddProductPilot = ({refreshPilotList}) => {
     pilot.cost = parseInt(pilot.costRef.current.value);
 
     if (!pilot.name || !pilot.craft || isNaN(pilot.productionTime) || isNaN(pilot.cost)) {
-      pilot.error = 'Por favor, preencha todos os campos.';
+      setError('Por favor, preencha todos os campos.');
       return;
     } else {
       const newPilot = {
@@ -62,7 +64,7 @@ const AddProductPilot = ({refreshPilotList}) => {
         <input type='submit' value="Salvar"/>
         <Link to={'/'}><button>Cancelar</button></Link>
       </form>
-      {pilot.errorRef.current && <p>{pilot.errorRef.current}</p>}
+      {error && <p>{error}</p>}
     </Card>
   )
 }
