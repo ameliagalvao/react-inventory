@@ -40,7 +40,7 @@ export default function App() {
       <Routes>
         <Route path='/' element={<PilotList pilots={pilots} refreshPilotList={refreshPilotList}/>}/>
         <Route path='/login' element={<Login/>} />
-        <Route path='/edit-pilot' element={<EditProductPilot/>} />
+        <Route path='/edit-pilot' element={<EditProductPilot refreshPilotList={refreshPilotList}/>} />
         <Route path='/add-new-pilot' element={<AddProductPilot refreshPilotList={refreshPilotList}/>}/>
         </Routes>
       </BrowserRouter>

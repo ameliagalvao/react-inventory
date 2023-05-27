@@ -20,7 +20,6 @@ const PilotList = ({pilots = [], refreshPilotList}) => {
     } else {
       console.log('cancelado')
     }
-    
   }
 
   return (

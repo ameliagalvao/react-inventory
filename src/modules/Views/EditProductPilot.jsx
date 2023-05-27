@@ -1,32 +1,41 @@
-import React, {useState} from 'react';
+import React, {useRef} from 'react';
 import DOMPurify from 'dompurify';
 import { Card } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { editPilot } from '../core/data/ProductPilots';
 
-const EditProductPilot = () => {
+const EditProductPilot = ({refreshPilotList}) => {
+  const navigate = useNavigate();
 
-  const [pilot, setPilot] = useState({
-    name: "",
-    craft: "",
-    productionTime: 0,
-    userUID: '',
-    cost: 0,
-  })
-  const [error, setError] = useState('')
-
-  // ToDo: Mudar p/ input não controlado useRef
-  const inputChangeHandler = (e) => {
-    const {name, value} = e.target;
-    setPilot((prev) => ({...prev, [name]: DOMPurify.sanitize(value)}));
-  }
+  const pilot = {
+    nameRef: useRef(),
+    craftRef: useRef(),
+    productionTimeRef: useRef(),
+    costRef: useRef(),
+    errorRef: useRef('')
+  };
 
   const submitHandler = (e) => {
     e.preventDefault();
-    if (!pilot.name || !pilot.craft || !pilot.productionTime || !pilot.cost ) {
-      setError('Por favor, preencha todos os campos.');
+    pilot.name = DOMPurify.sanitize(pilot.nameRef.current.value);
+    pilot.craft = DOMPurify.sanitize(pilot.craftRef.current.value);
+    pilot.productionTime = parseInt(pilot.productionTimeRef.current.value);
+    pilot.cost = parseInt(pilot.costRef.current.value);
+
+    if (!pilot.name || !pilot.craft || isNaN(pilot.productionTime) || isNaN(pilot.cost)) {
+      pilot.error = 'Por favor, preencha todos os campos.';
       return;
     } else {
-      const newPilot = {cost:`${pilot.cost}`, name:`${pilot.name}`, craft:`${pilot.craft}`, productionTime:`${pilot.productionTime}`, userUID: 'chLXXnwefYbnZQ4pRuafV4o85vi2'}
+      const newPilot = {
+        cost: `${pilot.cost}`,
+        name: `${pilot.name}`,
+        craft: `${pilot.craft}`,
+        productionTime: `${pilot.productionTime}`,
+        userUID: 'chLXXnwefYbnZQ4pRuafV4o85vi2'
+      };
+      editPilot('Mb0OT0XclIJ6GPiZeDoE', newPilot);
+      refreshPilotList();
+      navigate('/');
     }
   }
   
@@ -35,24 +44,24 @@ const EditProductPilot = () => {
       <h3>Editar</h3>      
       <form onSubmit={submitHandler}>
         <label htmlFor='name'>Nome do piloto:</label><br></br>
-        <input type='text' name='name' value={pilot.name} onChange={inputChangeHandler}/>
+        <input type='text' name='name' ref={pilot.nameRef} />
         <br></br>
         <label htmlFor='craft'>Técnica:</label>
         <br></br>
-        <input type='text' name='craft' value={pilot.craft} onChange={inputChangeHandler}/>
+        <input type='text' name='craft' ref={pilot.craftRef}/>
         <br></br>
         <label htmlFor='productionTime'>Tempo para produzir:</label>
         <br></br>
-        <input type='number' name='productionTime' value={pilot.productionTime} onChange={inputChangeHandler}/>
+        <input type='number' name='productionTime' ref={pilot.productionTimeRef}/>
         <br></br>
         <label htmlFor='cost'>Custo:</label>
         <br></br>
-        <input type='number' name='cost' value={pilot.cost} onChange={inputChangeHandler}/>
+        <input type='number' name='cost' ref={pilot.costRef}/>
         <br></br>
         <input type='submit' value="Salvar"/>
         <Link to={'/'}><button>Cancelar</button></Link>
       </form>
-      {error && <p>{error}</p>}
+      {pilot.errorRef.current && <p>{pilot.errorRef.current}</p>}
     </Card>
   )
 }
