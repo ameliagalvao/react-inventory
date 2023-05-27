@@ -9,6 +9,7 @@ import {getAllProductPilots} from './modules/core/data/ProductPilots';
 import { useCallback } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import AddProductPilot from './modules/Views/AddProductPilot';
+import { ContextProvider } from './modules/core/Context';
 
 export default function App() {
 
@@ -38,9 +39,9 @@ export default function App() {
     <Grid2  xs={12} sx={{padding:3}}>
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<PilotList pilots={pilots} refreshPilotList={refreshPilotList}/>}/>
+        <Route path='/' element={<ContextProvider><PilotList pilots={pilots} refreshPilotList={refreshPilotList}/></ContextProvider>}/>
         <Route path='/login' element={<Login/>} />
-        <Route path='/edit-pilot' element={<EditProductPilot refreshPilotList={refreshPilotList}/>} />
+        <Route path='/edit-pilot' element={<ContextProvider><EditProductPilot refreshPilotList={refreshPilotList}/></ContextProvider>} />
         <Route path='/add-new-pilot' element={<AddProductPilot refreshPilotList={refreshPilotList}/>}/>
         </Routes>
       </BrowserRouter>

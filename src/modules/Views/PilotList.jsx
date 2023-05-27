@@ -8,9 +8,13 @@ import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import CardMedia from '@mui/material/CardMedia';
-import {deletePilot} from '../core/data/ProductPilots'
+import {deletePilot} from '../core/data/ProductPilots';
+import { Context } from '../core/Context';
+import { useContext } from 'react';
 
 const PilotList = ({pilots = [], refreshPilotList}) => {
+
+  const { setSelectedPilot } = useContext(Context);
 
   const handleDelete = (itemID) => {
     const confirmDeletion = window.confirm('Tem certeza que deseja deletar?')
@@ -21,6 +25,10 @@ const PilotList = ({pilots = [], refreshPilotList}) => {
       console.log('cancelado')
     }
   }
+
+  const handleEdit = (itemId) => {
+    setSelectedPilot(itemId);
+  };
 
   return (
    <>
@@ -41,7 +49,7 @@ const PilotList = ({pilots = [], refreshPilotList}) => {
               <IconButton onClick={() => handleDelete(item.id)} aria-label="delete">
                 <DeleteIcon />
               </IconButton>
-              <Link to={'/edit-pilot'}><IconButton aria-label="edit">
+              <Link to={'/edit-pilot'} onClick={() => handleEdit(item.id)}><IconButton aria-label="edit">
                 <EditIcon />
               </IconButton></Link>
             </CardActions>

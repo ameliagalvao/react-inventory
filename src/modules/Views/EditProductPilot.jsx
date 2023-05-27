@@ -1,11 +1,13 @@
-import React, {useRef} from 'react';
+import React, {useRef, useContext} from 'react';
 import DOMPurify from 'dompurify';
 import { Card } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { editPilot } from '../core/data/ProductPilots';
+import { Context } from '../core/Context';
 
 const EditProductPilot = ({refreshPilotList}) => {
   const navigate = useNavigate();
+  const { selectedPilotId } = useContext(Context);
 
   const pilot = {
     nameRef: useRef(),
@@ -33,7 +35,7 @@ const EditProductPilot = ({refreshPilotList}) => {
         productionTime: `${pilot.productionTime}`,
         userUID: 'chLXXnwefYbnZQ4pRuafV4o85vi2'
       };
-      editPilot('Mb0OT0XclIJ6GPiZeDoE', newPilot);
+      editPilot(selectedPilotId, newPilot);
       refreshPilotList();
       navigate('/');
     }
