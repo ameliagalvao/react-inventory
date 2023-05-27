@@ -10,11 +10,11 @@ import EditIcon from '@mui/icons-material/Edit';
 import CardMedia from '@mui/material/CardMedia';
 import {deletePilot} from '../core/data/ProductPilots'
 
-const PilotList = ({pilots = [], refreshList}) => {
+const PilotList = ({pilots = [], refreshPilotList}) => {
 
   const handleDelete = (itemID) => {
     deletePilot(itemID)
-    refreshList()
+    refreshPilotList()
   }
 
   return (

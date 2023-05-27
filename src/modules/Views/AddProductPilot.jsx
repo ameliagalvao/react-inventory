@@ -1,10 +1,12 @@
 import React, {useState} from 'react';
 import DOMPurify from 'dompurify';
 import { Card } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { addNewPilot } from '../core/data/ProductPilots';
 
 const AddProductPilot = ({refreshPilotList}) => {
+
+  const navigate = useNavigate();
 
   const [pilot, setPilot] = useState({
     name: "",
@@ -28,8 +30,9 @@ const AddProductPilot = ({refreshPilotList}) => {
       return;
     } else {
       const newPilot = {cost:`${pilot.cost}`, name:`${pilot.name}`, craft:`${pilot.craft}`, productionTime:`${pilot.productionTime}`, userUID: 'chLXXnwefYbnZQ4pRuafV4o85vi2'}
-      addNewPilot(newPilot)
-      refreshPilotList()
+      addNewPilot(newPilot);
+      refreshPilotList();
+      navigate('/');
     }
   }
   
