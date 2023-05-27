@@ -32,7 +32,7 @@ const EditProductPilot = () => {
   
   return (
    <Card sx={{ m: 2, p:2, width:300, textAlign: 'center'}}>
-      <h3>Adicionar novo Piloto</h3>      
+      <h3>Editar</h3>      
       <form onSubmit={submitHandler}>
         <label htmlFor='name'>Nome do piloto:</label><br></br>
         <input type='text' name='name' value={pilot.name} onChange={inputChangeHandler}/>

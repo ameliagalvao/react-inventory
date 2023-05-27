@@ -3,6 +3,7 @@ import Login from './modules/Views/Login';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import Header from './modules/core/Header.jsx';
 import PilotList from './modules/Views/PilotList';
+import EditProductPilot from './modules/Views/EditProductPilot';
 import { useState, useEffect } from 'react';
 import {getAllProductPilots} from './modules/core/data/ProductPilots';
 import { useCallback } from 'react';
@@ -37,6 +38,7 @@ export default function App() {
       <Routes>
         <Route path='/' element={<PilotList pilots={pilots} refreshList={refreshPilotList}/>}/>
         <Route path='/login' element={<Login/>} />
+        <Route path='/edit-pilot' element={<EditProductPilot/>} />
         <Route path='/add-new-pilot' element={<AddProductPilot refreshPilotList={refreshPilotList}/>}/>
         </Routes>
       </BrowserRouter>

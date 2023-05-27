@@ -36,9 +36,9 @@ const PilotList = ({pilots = [], refreshList}) => {
               <IconButton onClick={() => handleDelete(item.id)} aria-label="delete">
                 <DeleteIcon />
               </IconButton>
-              <IconButton onClick={() => console.log(item.id)} aria-label="edit">
+              <Link to={'/edit-pilot'}><IconButton aria-label="edit">
                 <EditIcon />
-              </IconButton>
+              </IconButton></Link>
             </CardActions>
           </Card>)}
         </Grid2>
