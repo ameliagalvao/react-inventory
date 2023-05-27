@@ -13,8 +13,14 @@ import {deletePilot} from '../core/data/ProductPilots'
 const PilotList = ({pilots = [], refreshPilotList}) => {
 
   const handleDelete = (itemID) => {
-    deletePilot(itemID)
-    refreshPilotList()
+    const confirmDeletion = window.confirm('Tem certeza que deseja deletar?')
+    if (confirmDeletion) {
+      deletePilot(itemID)
+      refreshPilotList()
+    } else {
+      console.log('cancelado')
+    }
+    
   }
 
   return (
