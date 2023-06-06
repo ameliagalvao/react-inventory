@@ -1,5 +1,6 @@
 import Card from '@mui/material/Card';
 import Grid2 from '@mui/material/Unstable_Grid2';
+import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import {Link} from 'react-router-dom';
 import CardContent from '@mui/material/CardContent';
@@ -7,14 +8,17 @@ import CardActions from '@mui/material/CardActions';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CardMedia from '@mui/material/CardMedia';
-import {deletePilot} from '../core/data/ProductPilots';
-import { Context } from '../core/Context';
-import { useContext } from 'react';
+import Collapse from '@mui/material/Collapse';
+import {deletePilot} from '../infra/queries';
+import { SelectedPilotContext } from '../context/SelectedPilotContext';
+import { useContext, useState } from 'react';
 
 const PilotList = ({pilots = [], refreshPilotList}) => {
 
-  const { setSelectedPilotData } = useContext(Context);
+  const { setSelectedPilotData } = useContext(SelectedPilotContext);
+  const [expanded, setExpanded] = useState(false);
 
   const handleDelete = (itemID) => {
     const confirmDeletion = window.confirm('Tem certeza que deseja deletar?')
@@ -28,6 +32,10 @@ const PilotList = ({pilots = [], refreshPilotList}) => {
 
   const handleEdit = (item) => {
     setSelectedPilotData(item);
+  };
+
+  const handleExpand = () => {
+    setExpanded(!expanded);
   };
 
   return (
@@ -46,13 +54,35 @@ const PilotList = ({pilots = [], refreshPilotList}) => {
             {item.name}
             </CardContent>
             <CardActions disableSpacing>
-              <IconButton onClick={() => handleDelete(item.id)} aria-label="delete">
+              <IconButton onClick={() => handleDelete(item.id)} aria-label="delete" title='Deletar'>
                 <DeleteIcon />
               </IconButton>
-              <Link to={'/edit-pilot'} onClick={() => handleEdit({id: item.id, ...item})}><IconButton aria-label="edit">
+              <Link to={'/edit-pilot'} onClick={() => handleEdit({id: item.id, ...item})}><IconButton aria-label="edit" title='Editar'>
                 <EditIcon />
               </IconButton></Link>
+              <ExpandMore
+          expand={expanded}
+          onClick={handleExpand}
+          aria-expanded={expanded}
+          aria-label="show more"
+          title='Mais informações'
+        >
+          <ExpandMoreIcon />
+        </ExpandMore>
             </CardActions>
+            <Collapse in={expanded} timeout="auto" unmountOnExit>
+        <CardContent>
+          <Typography paragraph>
+            Técnica: {item.craft}
+          </Typography>
+          <Typography paragraph>
+            Tempo de produção: {item.productionTime}h
+          </Typography>
+          <Typography paragraph>
+            Custo: {item.cost} reais
+          </Typography>
+        </CardContent>
+      </Collapse>
           </Card>)}
         </Grid2>
      <div>
@@ -63,3 +93,14 @@ const PilotList = ({pilots = [], refreshPilotList}) => {
 }
 
 export default PilotList
+
+const ExpandMore = styled((props) => {
+  const { expand, ...other } = props;
+  return <IconButton {...other} />;
+})(({ theme, expand }) => ({
+  transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
+  marginLeft: 'auto',
+  transition: theme.transitions.create('transform', {
+    duration: theme.transitions.duration.shortest,
+  }),
+}));

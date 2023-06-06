@@ -1,17 +1,18 @@
 import './App.css';
-import Login from './modules/Views/Login';
-import Grid2 from '@mui/material/Unstable_Grid2';
-import Header from './modules/core/Header.jsx';
-import PilotList from './modules/Views/PilotList';
-import EditProductPilot from './modules/Views/EditProductPilot';
-import { useState, useEffect } from 'react';
-import {getAllProductPilots} from './modules/core/data/ProductPilots';
-import { useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import AddProductPilot from './modules/Views/AddProductPilot';
-import { ContextProvider } from './modules/core/Context';
+import Login from './modules/user/Login';
+import Layout from './modules/Layout.jsx';
+import PilotList from './modules/pilots/PilotList';
+import EditProductPilot from './modules/pilots/EditProductPilot';
+import AddProductPilot from './modules/pilots/AddProductPilot';
+import {getAllProductPilots} from './modules/infra/queries';
+import { SelectedPilotContextProvider } from './modules/context/SelectedPilotContext';
+import { useAuthContext } from './modules/user/hooks/useAuthContext';
 
 export default function App() {
+
+  const {authIsReady, user} = useAuthContext()
 
   // Controle de estado da lista de pilotos --------------
   const [pilots, setPilots] = useState([]);
@@ -32,20 +33,24 @@ export default function App() {
   // -----------------------------------------------------
 
   return (
-    <Grid2 container spacing={1}>
-      <Grid2 xs={12} sx={{padding:2}}>
-        <Header/>
-      </Grid2>
-    <Grid2  xs={12} sx={{padding:3}}>
-    <BrowserRouter>
+<>
+    {authIsReady && user && 
+     ( <BrowserRouter>
       <Routes>
-        <Route path='/' element={<ContextProvider><PilotList pilots={pilots} refreshPilotList={refreshPilotList}/></ContextProvider>}/>
+        <Route path='/' element={<Layout/>}>
+        <Route index element={<SelectedPilotContextProvider><PilotList pilots={pilots} refreshPilotList={refreshPilotList}/></SelectedPilotContextProvider>}/>
         <Route path='/login' element={<Login/>} />
-        <Route path='/edit-pilot' element={<ContextProvider><EditProductPilot refreshPilotList={refreshPilotList}/></ContextProvider>} />
+        <Route path='/edit-pilot' element={<SelectedPilotContextProvider><EditProductPilot refreshPilotList={refreshPilotList}/></SelectedPilotContextProvider>} />
         <Route path='/add-new-pilot' element={<AddProductPilot refreshPilotList={refreshPilotList}/>}/>
+        </Route>
         </Routes>
-      </BrowserRouter>
-    </Grid2>
-    </Grid2>
+      </BrowserRouter>)}
+      {authIsReady && !user && (
+      <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<Login/>}/>
+        </Routes>
+        </BrowserRouter>)}
+  </>
   )
 }

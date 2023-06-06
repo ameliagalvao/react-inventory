@@ -1,5 +1,5 @@
 import { addDoc, collection, getDocs, doc, updateDoc, deleteDoc } from 'firebase/firestore';
-import { db } from './FireBase';
+import { db } from './firebase';
 
 export const getAllProductPilots = async () => {
   try {

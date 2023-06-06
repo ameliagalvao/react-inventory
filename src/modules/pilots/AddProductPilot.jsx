@@ -2,7 +2,7 @@ import React, {useRef, useState} from 'react';
 import DOMPurify from 'dompurify';
 import { Card } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
-import { addNewPilot } from '../core/data/ProductPilots';
+import { addNewPilot } from '../infra/queries';
 
 const AddProductPilot = ({refreshPilotList}) => {
 

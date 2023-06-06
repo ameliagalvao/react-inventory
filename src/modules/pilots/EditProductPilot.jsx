@@ -2,12 +2,12 @@ import React, {useRef, useContext, useState} from 'react';
 import DOMPurify from 'dompurify';
 import { Card } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
-import { editPilot } from '../core/data/ProductPilots';
-import { Context } from '../core/Context';
+import { editPilot } from '../infra/queries';
+import { SelectedPilotContext } from '../context/SelectedPilotContext';
 
 const EditProductPilot = ({refreshPilotList}) => {
   const navigate = useNavigate();
-  const { selectedPilot } = useContext(Context);
+  const { selectedPilot } = useContext(SelectedPilotContext);
 
   const pilot = {
     nameRef: useRef(),

@@ -1,8 +1,8 @@
 import React, { createContext, useState } from 'react';
 
-const Context = createContext();
+const SelectedPilotContext = createContext();
 
-const ContextProvider = ({ children }) => {
+const SelectedPilotContextProvider = ({ children }) => {
   const [selectedPilot, setSelectedPilot] = useState(null);
 
   const setSelectedPilotData = (data) => {
@@ -15,10 +15,10 @@ const ContextProvider = ({ children }) => {
   };
 
   return (
-    <Context.Provider value={contextValue}>
+    <SelectedPilotContext.Provider value={contextValue}>
       {children}
-    </Context.Provider>
+    </SelectedPilotContext.Provider>
   );
 };
 
-export { Context, ContextProvider };
+export { SelectedPilotContext, SelectedPilotContextProvider };
