@@ -11,7 +11,10 @@ const AddProductPilot = ({refreshPilotList}) => {
   const pilot = {
     nameRef: useRef(),
     craftRef: useRef(),
-    productionTimeRef: useRef(),
+    productionTimeRef: {
+      hours: useRef(),
+      minutes: useRef()
+    },
     costRef: useRef(),
     error: ''
   };
@@ -22,10 +25,15 @@ const AddProductPilot = ({refreshPilotList}) => {
     e.preventDefault();
     pilot.name = DOMPurify.sanitize(pilot.nameRef.current.value);
     pilot.craft = DOMPurify.sanitize(pilot.craftRef.current.value);
-    pilot.productionTime = parseInt(pilot.productionTimeRef.current.value);
+    pilot.productionTime = {
+      hours: parseInt(pilot.productionTimeRef.hours.current.value),
+      minutes: parseInt(pilot.productionTimeRef.minutes.current.value)
+    };
     pilot.cost = parseInt(pilot.costRef.current.value);
 
-    if (!pilot.name || !pilot.craft || isNaN(pilot.productionTime) || isNaN(pilot.cost)) {
+    if (!pilot.name || !pilot.craft || isNaN(pilot.productionTime.hours) ||
+    isNaN(pilot.productionTime.minutes) ||
+    isNaN(pilot.cost)) {
       setError('Por favor, preencha todos os campos.');
       return;
     } else {
@@ -33,7 +41,10 @@ const AddProductPilot = ({refreshPilotList}) => {
         cost: `${pilot.cost}`,
         name: `${pilot.name}`,
         craft: `${pilot.craft}`,
-        productionTime: `${pilot.productionTime}`,
+        productionTime: {
+          hours: `${pilot.productionTime.hours}`,
+          minutes: `${pilot.productionTime.minutes}`
+        },
         userUID: 'chLXXnwefYbnZQ4pRuafV4o85vi2'
       };
       addNewPilot(newPilot);
@@ -46,22 +57,26 @@ const AddProductPilot = ({refreshPilotList}) => {
    <Card sx={{ m: 2, p:2, width:300, textAlign: 'center'}}>
       <h3>Adicionar novo Piloto</h3>      
       <form onSubmit={submitHandler}>
-        <label htmlFor='name'>Nome do piloto:</label><br></br>
-        <input type='text' name='name' ref={pilot.nameRef} />
-        <br></br>
-        <label htmlFor='craft'>Técnica:</label>
-        <br></br>
-        <input type='text' name='craft' ref={pilot.craftRef}/>
-        <br></br>
-        <label htmlFor='productionTime'>Tempo para produzir:</label>
-        <br></br>
-        <input type='number' name='productionTime' ref={pilot.productionTimeRef}/>
-        <br></br>
-        <label htmlFor='cost'>Custo:</label>
-        <br></br>
-        <input type='number' name='cost' ref={pilot.costRef}/>
-        <br></br>
-        <input type='submit' value="Salvar"/>
+        <label htmlFor="name">Nome do piloto:</label>
+        <br />
+        <input type="text" name="name" ref={pilot.nameRef} />
+        <br />
+        <label htmlFor="craft">Técnica:</label>
+        <br />
+        <input type="text" name="craft" ref={pilot.craftRef} />
+        <br />
+        <label htmlFor="productionTime">Tempo para produzir:</label>
+        <br />
+        <div style={{display:'inline-flex'}}>
+        <input style={{width:50}} type="number" min="0" name="productionTimeHours" ref={pilot.productionTimeRef.hours} placeholder='horas'/><span>h</span>
+        <input style={{width:65}} type="number" min="0" name="productionTimeMinutes" ref={pilot.productionTimeRef.minutes} placeholder='minutos' /><span>m</span>
+        </div>
+        <br />
+        <label htmlFor="cost">Custo:</label>
+        <br />
+        <input type="number" name="cost" ref={pilot.costRef} />
+        <br />
+        <input type="submit" value="Salvar" />
         <Link to={'/'}><button>Cancelar</button></Link>
       </form>
       {error && <p>{error}</p>}

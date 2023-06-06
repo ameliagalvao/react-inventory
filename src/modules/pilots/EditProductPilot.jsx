@@ -12,7 +12,10 @@ const EditProductPilot = ({refreshPilotList}) => {
   const [pilot, setPilot] = useState({
     name: selectedPilot.name,
     craft: selectedPilot.craft,
-    productionTime: selectedPilot.productionTime,
+    productionTime: {
+      hours: selectedPilot.productionTime.hours ? selectedPilot.productionTime.hours : selectedPilot.productionTime,
+      minutes: selectedPilot.productionTime.minutes ? selectedPilot.productionTime.minutes : 0,
+    },
     cost: selectedPilot.cost,
     userUID: 'teste',
     error: ''
@@ -51,7 +54,10 @@ const EditProductPilot = ({refreshPilotList}) => {
         <br></br>
         <label htmlFor='productionTime'>Tempo para produzir:</label>
         <br></br>
-        <input type='number' name='productionTime' onChange={handleChange} value={pilot.productionTime} />
+        <div style={{display:'inline-flex'}}>
+        <input style={{width:50}} type="number" min="0" name="productionTimeHours" onChange={handleChange} value={pilot.productionTime.hours} placeholder='horas'/><span>h</span>
+        <input style={{width:65}} type="number" min="0" name="productionTimeMinutes" onChange={handleChange} value={pilot.productionTime.minutes} placeholder='minutos' /><span>m</span>
+        </div>
         <br></br>
         <label htmlFor='cost'>Custo:</label>
         <br></br>

@@ -71,18 +71,14 @@ const PilotList = ({pilots = [], refreshPilotList}) => {
         </ExpandMore>
             </CardActions>
             <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <CardContent>
-          <Typography paragraph>
-            Técnica: {item.craft}
-          </Typography>
-          <Typography paragraph>
-            Tempo de produção: {item.productionTime}h
-          </Typography>
-          <Typography paragraph>
-            Custo: {item.cost} reais
-          </Typography>
-        </CardContent>
-      </Collapse>
+              <CardContent>
+                <Typography paragraph>Técnica: {item.craft || '-'}</Typography>
+                <Typography paragraph>
+                  Tempo de produção: {item.productionTime.hours && item.productionTime.minutes ? `${item.productionTime.hours}h${item.productionTime.minutes}m` : `${item.productionTime}h`}
+                </Typography>
+                <Typography paragraph>Custo: {item.cost ? `${item.cost} reais` : '-'}</Typography>
+              </CardContent>
+            </Collapse>
           </Card>)}
         </Grid2>
      <div>
