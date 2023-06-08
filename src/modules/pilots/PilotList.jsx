@@ -47,7 +47,7 @@ const PilotList = ({pilots = [], refreshPilotList}) => {
             <CardMedia
         component="img"
         sx={{ width: 150, borderRadius:2 }}
-        image="https://cdn.folhape.com.br/upload/dn_arquivo/2020/11/whatsapp-image-2020-11-27-at-120817-pm.jpg"
+        image={item.photo ? item.photo : "https://cdn.folhape.com.br/upload/dn_arquivo/2020/11/whatsapp-image-2020-11-27-at-120817-pm.jpg"}
         alt="..."
       />
             <CardContent>
