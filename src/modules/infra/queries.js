@@ -2,6 +2,23 @@ import { addDoc, collection, getDocs, doc, updateDoc, deleteDoc } from 'firebase
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { db, storage } from './firebase';
 
+// Supplies ----------------------------------------------------
+export const getAllSupplies = async () => {
+  try {
+    const supplieRef = await getDocs(collection(db, "supplies"));
+    const response = [];
+    supplieRef.forEach(supplie => {
+      response.push({id: supplie.id, ...supplie.data()});
+    });
+    return response;
+  } catch (error) {
+    console.error("Erro", error);
+    return [];
+  }
+};
+// Fim ---------------------------------------------------------
+
+// Pilots ------------------------------------------------------
 export const uploadImageToFirestorage = async (image) => {
   const imageRef = ref(storage, `pilots/${image.name}`);
   try {
@@ -55,3 +72,4 @@ export const deletePilot = async (pilotID) => {
     console.error("Erro:", error);
   }
 };
+// Fim ---------------------------------------------------------
