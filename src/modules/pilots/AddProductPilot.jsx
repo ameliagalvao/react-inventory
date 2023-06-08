@@ -2,7 +2,7 @@ import React, {useRef, useState} from 'react';
 import DOMPurify from 'dompurify';
 import { Card } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
-import { addNewPilot } from '../infra/queries';
+import { addNewPilot, uploadImageToFirestorage } from '../infra/queries';
 
 const AddProductPilot = ({refreshPilotList}) => {
 
@@ -16,12 +16,19 @@ const AddProductPilot = ({refreshPilotList}) => {
       minutes: useRef()
     },
     costRef: useRef(),
+    photo: '',
     error: ''
   };
 
   const [error, setError] = useState('');
+  const [image, setImage] = useState(null);
 
-  const submitHandler = (e) => {
+  const handleImageUpload = (e) => {
+    setImage(e.target.files[0]);
+  };
+  
+
+  const submitHandler = async (e) => {
     e.preventDefault();
     pilot.name = DOMPurify.sanitize(pilot.nameRef.current.value);
     pilot.craft = DOMPurify.sanitize(pilot.craftRef.current.value);
@@ -31,12 +38,13 @@ const AddProductPilot = ({refreshPilotList}) => {
     };
     pilot.cost = parseInt(pilot.costRef.current.value);
 
-    if (!pilot.name || !pilot.craft || isNaN(pilot.productionTime.hours) ||
+    if (!pilot.name || !pilot.craft || isNaN(pilot.productionTime.hours || !image) ||
     isNaN(pilot.productionTime.minutes) ||
     isNaN(pilot.cost)) {
       setError('Por favor, preencha todos os campos.');
       return;
     } else {
+      const url = await uploadImageToFirestorage(image)
       const newPilot = {
         cost: `${pilot.cost}`,
         name: `${pilot.name}`,
@@ -45,7 +53,8 @@ const AddProductPilot = ({refreshPilotList}) => {
           hours: `${pilot.productionTime.hours}`,
           minutes: `${pilot.productionTime.minutes}`
         },
-        userUID: 'chLXXnwefYbnZQ4pRuafV4o85vi2'
+        userUID: 'chLXXnwefYbnZQ4pRuafV4o85vi2',
+        photo: url,
       };
       addNewPilot(newPilot);
       refreshPilotList();
@@ -75,6 +84,10 @@ const AddProductPilot = ({refreshPilotList}) => {
         <label htmlFor="cost">Custo:</label>
         <br />
         <input type="number" name="cost" ref={pilot.costRef} />
+        <br />
+        <label htmlFor="image">Foto do Piloto:</label>
+        <br />
+        <input type="file" name="image" onChange={handleImageUpload} accept="image/*" />
         <br />
         <input type="submit" value="Salvar" />
         <Link to={'/'}><button>Cancelar</button></Link>

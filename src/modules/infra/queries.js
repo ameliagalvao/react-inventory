@@ -1,5 +1,17 @@
 import { addDoc, collection, getDocs, doc, updateDoc, deleteDoc } from 'firebase/firestore';
-import { db } from './firebase';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import { db, storage } from './firebase';
+
+export const uploadImageToFirestorage = async (image) => {
+  const imageRef = ref(storage, `pilots/${image.name}`);
+  try {
+    await uploadBytes(imageRef, image);
+    console.log('Imagem carregada com sucesso');
+    return await getDownloadURL(imageRef)
+  } catch (error) {
+    console.error('Erro:', error);
+  }
+}
 
 export const getAllProductPilots = async () => {
   try {
