@@ -3,10 +3,12 @@ import DOMPurify from 'dompurify';
 import { Card } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { addNewPilot, uploadImageToFirestorage } from '../infra/queries';
+import {useAuthContext} from '../user/hooks/useAuthContext';
 
 const AddProductPilot = ({refreshPilotList}) => {
 
   const navigate = useNavigate();
+  const {user} = useAuthContext();
 
   const pilot = {
     nameRef: useRef(),
@@ -53,7 +55,7 @@ const AddProductPilot = ({refreshPilotList}) => {
           hours: `${pilot.productionTime.hours}`,
           minutes: `${pilot.productionTime.minutes}`
         },
-        userUID: 'chLXXnwefYbnZQ4pRuafV4o85vi2',
+        userUID: user.uid,
         photo: url,
       };
       addNewPilot(newPilot);
