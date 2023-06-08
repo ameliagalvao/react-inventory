@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import DOMPurify from 'dompurify';
 import Card from '@mui/material/Card';
 import { useLogin } from './hooks/useLogin';
-import {Link} from 'react-router-dom';
 
 const Login = () => {
 
@@ -27,12 +26,12 @@ const Login = () => {
       setMissing('Por favor, insira um email válido.');
       return;
     }
-    if (!validatePassword(user.password)) {
-      setMissing(
-        'A senha deve conter pelo menos 8 caracteres, incluindo pelo menos uma letra maiúscula, uma letra minúscula e um número.'
-      );
-      return;
-    }
+    // if (!validatePassword(user.password)) {
+    //   setMissing(
+    //     'A senha deve conter pelo menos 8 caracteres, incluindo pelo menos uma letra maiúscula, uma letra minúscula e um número.'
+    //   );
+    //   return;
+    // }
       setMissing('')
       login(user.email, user.password)
     }
@@ -42,10 +41,10 @@ const Login = () => {
       return emailRegex.test(email);
     };
   
-    const validatePassword = (password) => {
-      const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
-      return passwordRegex.test(password);
-    };
+    // const validatePassword = (password) => {
+    //   const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+    //   return passwordRegex.test(password);
+    // };
   
   return (
     <div style={{display:'flex', justifyContent:'center'}}>
