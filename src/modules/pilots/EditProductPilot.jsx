@@ -1,11 +1,11 @@
-import React, {useState, useContext} from 'react';
+import React, { useState, useContext } from 'react';
 import DOMPurify from 'dompurify';
-import { Card } from '@mui/material';
+import { Card, Typography, TextField, Button, Box, Stack } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { editPilot } from '../infra/queries';
 import { SelectedPilotContext } from '../context/SelectedPilotContext';
 
-const EditProductPilot = ({refreshPilotList}) => {
+const EditProductPilot = ({ refreshPilotList }) => {
   const navigate = useNavigate();
   const { selectedPilot } = useContext(SelectedPilotContext);
 
@@ -17,8 +17,9 @@ const EditProductPilot = ({refreshPilotList}) => {
       minutes: selectedPilot.productionTime.minutes ? selectedPilot.productionTime.minutes : 0,
     },
     cost: selectedPilot.cost,
+    photo: selectedPilot.photo,
     userUID: 'teste',
-    error: ''
+    error: '',
   });
 
   const [error, setError] = useState('');
@@ -26,6 +27,19 @@ const EditProductPilot = ({refreshPilotList}) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setPilot((prev) => ({ ...prev, [name]: DOMPurify.sanitize(value) }));
+  };
+
+  const handleTimeChange = (e) => {
+    const { name, value } = e.target;
+    setPilot((prev) => ({
+      ...prev,
+      productionTime: { ...prev.productionTime, [name]: parseInt(value) },
+    }));
+  };
+
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    setPilot((prev) => ({ ...prev, photo: file }));
   };
 
   const submitHandler = (e) => {
@@ -38,38 +52,88 @@ const EditProductPilot = ({refreshPilotList}) => {
       refreshPilotList();
       navigate('/');
     }
-  }
-  
-  return (
-  <div style={{ mt: 3, display: 'flex', justifyContent: 'center' }}>
-   <Card sx={{ m: 2, p:2, width:300, textAlign: 'center'}}>
-      <h3>Editar {selectedPilot.name}</h3>      
-      <form onSubmit={submitHandler}>
-        <label htmlFor='name'>Nome do piloto:</label><br></br>
-        <input type='text' name='name' onChange={handleChange} value={pilot.name} />
-        <br></br>
-        <label htmlFor='craft'>Técnica:</label>
-        <br></br>
-        <input type='text' name='craft' onChange={handleChange} value={pilot.craft} />
-        <br></br>
-        <label htmlFor='productionTime'>Tempo para produzir:</label>
-        <br></br>
-        <div style={{display:'inline-flex'}}>
-        <input style={{width:50}} type="number" min="0" name="productionTimeHours" onChange={handleChange} value={pilot.productionTime.hours} placeholder='horas'/><span>h</span>
-        <input style={{width:65}} type="number" min="0" name="productionTimeMinutes" onChange={handleChange} value={pilot.productionTime.minutes} placeholder='minutos' /><span>m</span>
-        </div>
-        <br></br>
-        <label htmlFor='cost'>Custo:</label>
-        <br></br>
-        <input type='number' name='cost' onChange={handleChange} value={pilot.cost} />
-        <br></br>
-        <input type='submit' value="Salvar"/>
-        <Link to={'/'}><button>Cancelar</button></Link>
-      </form>
-      {error && <p>{error}</p>}
-    </Card>
-    </div>
-  )
-}
+  };
 
-export default EditProductPilot
+  return (
+    <Box display="flex" justifyContent="center" mt={3}>
+      <Card sx={{ m: 2, p: 2, width: 300, textAlign: 'center' }}>
+        <Typography variant="h5" gutterBottom>
+          Editar {selectedPilot.name}
+        </Typography>
+        <form onSubmit={submitHandler}>
+          <TextField
+            label="Nome do piloto"
+            name="name"
+            onChange={handleChange}
+            value={pilot.name}
+            fullWidth
+            required
+            margin="normal"
+          />
+          <TextField
+            label="Técnica"
+            name="craft"
+            onChange={handleChange}
+            value={pilot.craft}
+            fullWidth
+            required
+            margin="normal"
+          />
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <TextField
+              label="Tempo para produzir"
+              type="number"
+              name="hours"
+              onChange={handleTimeChange}
+              value={pilot.productionTime.hours}
+              placeholder="horas"
+              InputProps={{ inputProps: { min: 0 } }}
+              style={{ marginRight: 10 }}
+              required
+            />
+            <span>h</span>
+            <TextField
+              type="number"
+              name="minutes"
+              onChange={handleTimeChange}
+              value={pilot.productionTime.minutes}
+              placeholder="minutos"
+              InputProps={{ inputProps: { min: 0 } }}
+              style={{ marginLeft: 10 }}
+              required
+            />
+            <span>m</span>
+          </div>
+          <TextField
+            label="Custo dos materiais"
+            type="number"
+            name="cost"
+            onChange={handleChange}
+            value={pilot.cost}
+            fullWidth
+            required
+            margin="normal"
+          />
+          <div style={{ marginTop: 10 }}>
+            <input type="file" name="image" onChange={handleImageUpload} accept="image/*" />
+          </div>
+          <Stack spacing={1} sx={{ justifyContent: 'center', marginTop: 2 }}>
+            <Button type="submit" variant="contained" color="primary">
+              Salvar
+            </Button>
+            <Link to={'/'}>
+              <Button variant="contained">Cancelar</Button>
+            </Link>
+          </Stack>
+        </form>
+        {error && (
+          <Typography variant="body2" color="error" sx={{ mt: 1 }}>
+            {error}
+          </Typography>
+        )}
+      </Card>
+    </Box>
+  );
+};
+
+export default EditProductPilot;
