@@ -1,25 +1,24 @@
-import React, {useRef, useState} from 'react';
+import React, { useRef, useState } from 'react';
 import DOMPurify from 'dompurify';
-import { Card } from '@mui/material';
+import { Card, Typography, TextField, Button, Box, Stack } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { addNewPilot, uploadImageToFirestorage } from '../infra/queries';
-import {useAuthContext} from '../user/hooks/useAuthContext';
+import { useAuthContext } from '../user/hooks/useAuthContext';
 
-const AddProductPilot = ({refreshPilotList}) => {
-
+const AddProductPilot = ({ refreshPilotList }) => {
   const navigate = useNavigate();
-  const {user} = useAuthContext();
+  const { user } = useAuthContext();
 
   const pilot = {
     nameRef: useRef(),
     craftRef: useRef(),
     productionTimeRef: {
       hours: useRef(),
-      minutes: useRef()
+      minutes: useRef(),
     },
     costRef: useRef(),
     photo: '',
-    error: ''
+    error: '',
   };
 
   const [error, setError] = useState('');
@@ -28,7 +27,6 @@ const AddProductPilot = ({refreshPilotList}) => {
   const handleImageUpload = (e) => {
     setImage(e.target.files[0]);
   };
-  
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -36,24 +34,29 @@ const AddProductPilot = ({refreshPilotList}) => {
     pilot.craft = DOMPurify.sanitize(pilot.craftRef.current.value);
     pilot.productionTime = {
       hours: parseInt(pilot.productionTimeRef.hours.current.value),
-      minutes: parseInt(pilot.productionTimeRef.minutes.current.value)
+      minutes: parseInt(pilot.productionTimeRef.minutes.current.value),
     };
     pilot.cost = parseInt(pilot.costRef.current.value);
 
-    if (!pilot.name || !pilot.craft || isNaN(pilot.productionTime.hours || !image) ||
-    isNaN(pilot.productionTime.minutes) ||
-    isNaN(pilot.cost)) {
+    if (
+      !pilot.name ||
+      !pilot.craft ||
+      isNaN(pilot.productionTime.hours) ||
+      isNaN(pilot.productionTime.minutes) ||
+      isNaN(pilot.cost) ||
+      !image
+    ) {
       setError('Por favor, preencha todos os campos.');
       return;
     } else {
-      const url = await uploadImageToFirestorage(image)
+      const url = await uploadImageToFirestorage(image);
       const newPilot = {
         cost: `${pilot.cost}`,
         name: `${pilot.name}`,
         craft: `${pilot.craft}`,
         productionTime: {
           hours: `${pilot.productionTime.hours}`,
-          minutes: `${pilot.productionTime.minutes}`
+          minutes: `${pilot.productionTime.minutes}`,
         },
         userUID: user.uid,
         photo: url,
@@ -62,41 +65,84 @@ const AddProductPilot = ({refreshPilotList}) => {
       refreshPilotList();
       navigate('/');
     }
-  }
-  
-  return (
-   <Card sx={{ m: 2, p:2, width:300, textAlign: 'center'}}>
-      <h3>Adicionar novo Piloto</h3>      
-      <form onSubmit={submitHandler}>
-        <label htmlFor="name">Nome do piloto:</label>
-        <br />
-        <input type="text" name="name" ref={pilot.nameRef} />
-        <br />
-        <label htmlFor="craft">Técnica:</label>
-        <br />
-        <input type="text" name="craft" ref={pilot.craftRef} />
-        <br />
-        <label htmlFor="productionTime">Tempo para produzir:</label>
-        <br />
-        <div style={{display:'inline-flex'}}>
-        <input style={{width:50}} type="number" min="0" name="productionTimeHours" ref={pilot.productionTimeRef.hours} placeholder='horas'/><span>h</span>
-        <input style={{width:65}} type="number" min="0" name="productionTimeMinutes" ref={pilot.productionTimeRef.minutes} placeholder='minutos' /><span>m</span>
-        </div>
-        <br />
-        <label htmlFor="cost">Custo:</label>
-        <br />
-        <input type="number" name="cost" ref={pilot.costRef} />
-        <br />
-        <label htmlFor="image">Foto do Piloto:</label>
-        <br />
-        <input type="file" name="image" onChange={handleImageUpload} accept="image/*" />
-        <br />
-        <input type="submit" value="Salvar" />
-        <Link to={'/'}><button>Cancelar</button></Link>
-      </form>
-      {error && <p>{error}</p>}
-    </Card>
-  )
-}
+  };
 
-export default AddProductPilot
+  return (
+    <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+      <Card sx={{ m: 2, p: 2, width: 300, textAlign: 'center' }}>
+        <Typography variant="h5" gutterBottom>
+          Adicionar novo Piloto
+        </Typography>
+        <form onSubmit={submitHandler}>
+          <TextField
+            label="Nome do piloto"
+            inputRef={pilot.nameRef}
+            fullWidth
+            required
+            margin="normal"
+          />
+          <TextField
+            label="Técnica"
+            inputRef={pilot.craftRef}
+            fullWidth
+            required
+            margin="normal"
+          />
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <TextField
+              label="Tempo para produzir"
+              type="number"
+              inputRef={pilot.productionTimeRef.hours}
+              placeholder="horas"
+              InputProps={{ inputProps: { min: 0 } }}
+              style={{ marginRight: 10 }}
+              required
+            />
+            <span>h</span>
+            <TextField
+              type="number"
+              inputRef={pilot.productionTimeRef.minutes}
+              placeholder="minutos"
+              InputProps={{ inputProps: { min: 0 } }}
+              style={{ marginLeft: 10 }}
+              required
+            />
+            <span>m</span>
+          </div>
+          <TextField
+            label="Custo dos materiais"
+            type="number"
+            inputRef={pilot.costRef}
+            fullWidth
+            required
+            margin="normal"
+          />
+          <TextField
+            label="Foto do Piloto"
+            type="file"
+            inputProps={{ accept: 'image/*' }}
+            onChange={handleImageUpload}
+            fullWidth
+            required
+            margin="normal"
+          />
+          <Stack direction="row" spacing={1} sx={{ justifyContent: 'center', marginTop: 2 }}>
+            <Button type="submit" variant="contained" color="primary">
+              Salvar
+            </Button>
+            <Link to={'/'}>
+              <Button variant="contained" sx={{backgroundColor:'red'}}>Cancelar</Button>
+            </Link>
+          </Stack>
+        </form>
+        {error && (
+          <Typography variant="body2" color="error" sx={{ mt: 1 }}>
+            {error}
+          </Typography>
+        )}
+      </Card>
+    </Box>
+  );
+};
+
+export default AddProductPilot;

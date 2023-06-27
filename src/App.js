@@ -10,6 +10,7 @@ import AddProductPilot from './modules/pilots/AddProductPilot';
 import { getAllProductPilots, getAllSupplies } from './modules/infra/queries';
 import { SelectedPilotContextProvider } from './modules/context/SelectedPilotContext';
 import { useAuthContext } from './modules/user/hooks/useAuthContext';
+import Settings from './modules/pilots/Settings'
 
 export default function App() {
   const { authIsReady, user } = useAuthContext();
@@ -66,6 +67,7 @@ export default function App() {
               />
               <Route path="/add-new-pilot" element={<AddProductPilot refreshPilotList={refreshPilotList} />} />
               <Route path="/supplies" element={<SuppliesList supplies={supplies} />} />
+              <Route path="/settings" element={<Settings />} />
             </Route>
           </Routes>
         </BrowserRouter>
