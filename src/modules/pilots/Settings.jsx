@@ -46,7 +46,7 @@ const Settings = () => {
   };
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: '16px', backgroundColor:'#F3F3F3', padding: 5, borderRadius:5 }}>
       <TextField
         id="valorMaoDeObra"
         label="Valor da Mão de Obra"
@@ -65,7 +65,7 @@ const Settings = () => {
         value={profitMargin}
         onChange={handleProfitMarginChange}
       />
-      <Button variant="contained" onClick={handleSave} disabled={laborCost < 6}>
+      <Button variant="contained" sx={{ backgroundColor: '#026C7C', '&:hover': { backgroundColor: '#012B31' } }} onClick={handleSave} disabled={laborCost < 6}>
         Save
       </Button>
     </Box>

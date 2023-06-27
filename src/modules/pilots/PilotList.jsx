@@ -64,7 +64,7 @@ const PilotList = ({ pilots = [], refreshPilotList }) => {
 
   return (
     <>
-      <Typography gutterBottom variant="h5" component="p" sx={{ fontWeight: '700' }}>
+      <Typography gutterBottom variant="h3" component="p" sx={{ fontWeight: '700' }}>
         Pilotos
       </Typography>
       <Grid container spacing={2}>
@@ -72,8 +72,8 @@ const PilotList = ({ pilots = [], refreshPilotList }) => {
           <Grid item xs={12} sm={6} md={4} key={`pilot-${index}`}>
             <Card
               sx={{
-                backgroundColor: '#E63A60',
-                color: 'white',
+                backgroundColor: '#F3F3F3',
+                color: 'black',
                 textAlign: 'center',
               }}
             >
@@ -135,7 +135,7 @@ const PilotList = ({ pilots = [], refreshPilotList }) => {
       </Grid>
       <div style={{ position: 'fixed', bottom: '16px', right: '16px' }}>
         <Link to="/add-new-pilot">
-          <Fab color="primary" aria-label="add" variant="extended">
+          <Fab color="primary" sx={{ backgroundColor: '#D11C44', '&:hover': { backgroundColor: '#026C7C' } }}  aria-label="add" variant="extended">
             Adicionar Novo Piloto
           </Fab>
         </Link>

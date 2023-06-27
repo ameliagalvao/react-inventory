@@ -1,6 +1,6 @@
 html {
-  background-color: #F3F3F3;
-  color: #001524;
+  background-color: #071013;
+  color: #F3F3F3;
 }
 
 input {
@@ -13,4 +13,5 @@ button {
   border-radius: 10px;
   padding: 10px;
   margin: 5px;
+  background-color: #026C7C;
 }

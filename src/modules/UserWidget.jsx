@@ -27,7 +27,7 @@ const UserWidget = () => {
           <Typography variant="body1" style={{ fontWeight: 600 }}>
             Oi, {user.displayName}
           </Typography>
-          <Button variant="outlined" onClick={handleMenuOpen}>
+          <Button variant="outlined" onClick={handleMenuOpen} style={{ color: '#F3F3F3', borderColor: '#F3F3F3', width: '120px' }}>
             Menu
           </Button>
           <Menu
@@ -44,17 +44,32 @@ const UserWidget = () => {
             }}
             getContentAnchorEl={null}
           >
-            <MenuItem component={Link} to="/" onClick={handleMenuClose}>
+            <MenuItem
+              component={Link}
+              to="/"
+              onClick={handleMenuClose}
+              sx={{'&:hover': { backgroundColor: '#D11C44', color:'#F3F3F3'  } }} 
+            >
               Pilotos
             </MenuItem>
-            <MenuItem component={Link} to="/supplies" onClick={handleMenuClose}>
+            <MenuItem
+              component={Link}
+              to="/supplies"
+              onClick={handleMenuClose}
+              sx={{ '&:hover': { backgroundColor: '#D11C44', color:'#F3F3F3' } }} 
+            >
               Materiais
             </MenuItem>
-            <MenuItem component={Link} to="/settings" onClick={handleMenuClose}>
+            <MenuItem
+              component={Link}
+              to="/settings"
+              onClick={handleMenuClose}
+              sx={{'&:hover': { backgroundColor: '#D11C44', color:'#F3F3F3'  } }} 
+            >
               Configurações
             </MenuItem>
           </Menu>
-          <Button variant="contained" onClick={logout} color="secondary">
+          <Button variant="contained" onClick={logout} style={{ backgroundColor: '#E8C547' }}>
             Sair
           </Button>
         </div>

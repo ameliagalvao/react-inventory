@@ -19,16 +19,16 @@ const SuppliesList = ({ supplies = [] }) => {
 
   return (
     <>
-      <Typography gutterBottom variant="h5" component="p" sx={{ fontWeight: '700', marginBottom: 2 }}>
-        Matérias Primas
+      <Typography gutterBottom variant="h3" component="p" sx={{ fontWeight: '700', marginBottom: 2 }}>
+        Materiais
       </Typography>
       <Grid container spacing={2}>
         {supplies.map((item, index) => (
           <Grid item xs={12} sm={6} md={4} key={`supply-${index}`}>
             <Card
               sx={{
-                backgroundColor: '#E63A60',
-                color: 'white',
+                backgroundColor: '#F3F3F3',
+                color: 'black',
                 textAlign: 'center',
               }}
             >
