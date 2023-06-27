@@ -1,5 +1,6 @@
+import React, { useState } from 'react';
 import Card from '@mui/material/Card';
-import Grid2 from '@mui/material/Unstable_Grid2';
+import Grid from '@mui/material/Grid';
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { Link } from 'react-router-dom';
@@ -15,11 +16,11 @@ import Divider from '@mui/material/Divider';
 import Fab from '@mui/material/Fab';
 import { deletePilot } from '../infra/queries';
 import { SelectedPilotContext } from '../context/SelectedPilotContext';
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 
 const PilotList = ({ pilots = [], refreshPilotList }) => {
   const { setSelectedPilotData } = useContext(SelectedPilotContext);
-  const [expanded, setExpanded] = useState(false);
+  const [expandedItem, setExpandedItem] = useState(null);
   const laborCostPerHour = parseFloat(localStorage.getItem('ValorMaoDeObra')) || 6;
   const profitMargin = parseFloat(localStorage.getItem('ProfitMargin')) || 30;
 
@@ -37,8 +38,8 @@ const PilotList = ({ pilots = [], refreshPilotList }) => {
     setSelectedPilotData(item);
   };
 
-  const handleExpand = () => {
-    setExpanded(!expanded);
+  const handleExpand = (itemIndex) => {
+    setExpandedItem(itemIndex === expandedItem ? null : itemIndex);
   };
 
   const calculateLaborCost = (productionTime) => {
@@ -66,69 +67,72 @@ const PilotList = ({ pilots = [], refreshPilotList }) => {
       <Typography gutterBottom variant="h5" component="p" sx={{ fontWeight: '700' }}>
         Pilotos
       </Typography>
-      <Grid2 container>
+      <Grid container spacing={2}>
         {pilots.map((item, index) => (
-          <Card
-            sx={{
-              margin: 1,
-              p: 2,
-              backgroundColor: '#E63A60',
-              color: 'white',
-              fontSize: '16px',
-              textAlign: 'center',
-              width: 300,
-            }}
-            key={`pilot-${index}`}
-          >
-            <CardMedia
-              component="img"
-              sx={{ width: 300, height: 150, borderRadius: 2 }}
-              image={item.photo ? item.photo : 'https://cdn.folhape.com.br/upload/dn_arquivo/2020/11/whatsapp-image-2020-11-27-at-120817-pm.jpg'}
-              alt="..."
-            />
-            <CardContent>
-              <Typography gutterBottom variant="h5" component="p" sx={{ fontWeight: '700' }}>
-                {item.name}
-              </Typography>
-            </CardContent>
-            <CardActions disableSpacing>
-              <IconButton onClick={() => handleDelete(item.id)} aria-label="delete" title="Deletar">
-                <DeleteIcon />
-              </IconButton>
-              <Link to="/edit-pilot" onClick={() => handleEdit({ id: item.id, ...item })}>
-                <IconButton aria-label="edit" title="Editar">
-                  <EditIcon />
-                </IconButton>
-              </Link>
-              <ExpandMore expand={expanded} onClick={handleExpand} aria-expanded={expanded} aria-label="show more" title="Mais informações">
-                <ExpandMoreIcon />
-              </ExpandMore>
-            </CardActions>
-            <Collapse in={expanded} timeout="auto" unmountOnExit>
+          <Grid item xs={12} sm={6} md={4} key={`pilot-${index}`}>
+            <Card
+              sx={{
+                backgroundColor: '#E63A60',
+                color: 'white',
+                textAlign: 'center',
+              }}
+            >
+              <CardMedia
+                component="img"
+                sx={{ width: 300, height: 150, borderRadius: 2, margin: '20px auto 0' }}
+                image={item.photo ? item.photo : 'https://cdn.folhape.com.br/upload/dn_arquivo/2020/11/whatsapp-image-2020-11-27-at-120817-pm.jpg'}
+                alt="..."
+              />
               <CardContent>
-                <Typography sx={{ fontWeight: '700' }}>TEMPO DE PRODUÇÃO:</Typography>
-                <Typography>
-                  {item.productionTime.hours && item.productionTime.minutes
-                    ? `${item.productionTime.hours}h${item.productionTime.minutes}m`
-                    : `${item.productionTime}h`}
+                <Typography gutterBottom variant="h5" component="p" sx={{ fontWeight: '700' }}>
+                  {item.name}
                 </Typography>
-                <Divider sx={{ marginTop: 1, marginBottom: 1 }} />
-                <Typography sx={{ fontWeight: '700' }}>CUSTO DOS MATERIAIS:</Typography>
-                <Typography>{item.cost ? `${item.cost} reais` : '-'}</Typography>
-                <Divider sx={{ marginTop: 1, marginBottom: 1 }} />
-                <Typography sx={{ fontWeight: '700' }}>CUSTO DA MÃO DE OBRA:</Typography>
-                <Typography>{`${calculateLaborCost(item.productionTime)} reais`}</Typography>
-                <Divider variant="middle" sx={{ marginTop: 3, marginBottom: 1, backgroundColor: 'white' }} />
-                <Typography sx={{ fontWeight: '700', fontSize: 20 }}>CUSTO TOTAL:</Typography>
-                <Typography sx={{ fontSize: 18 }}>{`${calculateTotalCost(item.productionTime, item.cost)} reais`}</Typography>
-                <Divider sx={{ marginTop: 3, marginBottom: 1, backgroundColor: 'white' }} />
-                <Typography sx={{ fontWeight: '700', fontSize: 20 }}>VALOR FINAL:</Typography>
-                <Typography sx={{ fontSize: 18 }}>{`${calculateFinalValue(item.productionTime, item.cost)} reais`}</Typography>
               </CardContent>
-            </Collapse>
-          </Card>
+              <CardActions disableSpacing>
+                <IconButton onClick={() => handleDelete(item.id)} aria-label="delete" title="Deletar">
+                  <DeleteIcon />
+                </IconButton>
+                <Link to="/edit-pilot" onClick={() => handleEdit({ id: item.id, ...item })}>
+                  <IconButton aria-label="edit" title="Editar">
+                    <EditIcon />
+                  </IconButton>
+                </Link>
+                <ExpandMore
+                  expand={index === expandedItem}
+                  onClick={() => handleExpand(index)}
+                  aria-expanded={index === expandedItem}
+                  aria-label="show more"
+                  title="Mais informações"
+                >
+                  <ExpandMoreIcon />
+                </ExpandMore>
+              </CardActions>
+              <Collapse in={index === expandedItem} timeout="auto" unmountOnExit>
+                <CardContent>
+                  <Typography sx={{ fontWeight: '700' }}>TEMPO DE PRODUÇÃO:</Typography>
+                  <Typography>
+                    {item.productionTime.hours && item.productionTime.minutes
+                      ? `${item.productionTime.hours}h${item.productionTime.minutes}m`
+                      : `${item.productionTime}h`}
+                  </Typography>
+                  <Divider sx={{ marginTop: 1, marginBottom: 1 }} />
+                  <Typography sx={{ fontWeight: '700' }}>CUSTO DOS MATERIAIS:</Typography>
+                  <Typography>{item.cost ? `${item.cost} reais` : '-'}</Typography>
+                  <Divider sx={{ marginTop: 1, marginBottom: 1 }} />
+                  <Typography sx={{ fontWeight: '700' }}>CUSTO DA MÃO DE OBRA:</Typography>
+                  <Typography>{`${calculateLaborCost(item.productionTime)} reais`}</Typography>
+                  <Divider variant="middle" sx={{ marginTop: 3, marginBottom: 1, backgroundColor: 'white' }} />
+                  <Typography sx={{ fontWeight: '700', fontSize: 20 }}>CUSTO TOTAL:</Typography>
+                  <Typography sx={{ fontSize: 18 }}>{`${calculateTotalCost(item.productionTime, item.cost)} reais`}</Typography>
+                  <Divider sx={{ marginTop: 3, marginBottom: 1, backgroundColor: 'white' }} />
+                  <Typography sx={{ fontWeight: '700', fontSize: 20 }}>VALOR FINAL:</Typography>
+                  <Typography sx={{ fontSize: 18 }}>{`${calculateFinalValue(item.productionTime, item.cost)} reais`}</Typography>
+                </CardContent>
+              </Collapse>
+            </Card>
+          </Grid>
         ))}
-      </Grid2>
+      </Grid>
       <div style={{ position: 'fixed', bottom: '16px', right: '16px' }}>
         <Link to="/add-new-pilot">
           <Fab color="primary" aria-label="add" variant="extended">
